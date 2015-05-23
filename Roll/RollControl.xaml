@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="Roll.RollControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" >
+    <StackPanel Height="26" Orientation="Horizontal">
+        <Label x:Name="Index" Margin="5,0,5,0"  Content="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="25"/>
+        <TextBox x:Name="MinValue" Margin="5,0,5,0" Text="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="45"/>
+        <TextBox x:Name="MaxValue" Margin="5,0,5,0" Text="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="45"/>
+        <Label x:Name="RanValue" Margin="5,0,5,0" Content="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="45"/>
+        <Button x:Name="Minus" Content="-" Width="16" Margin="5,0,0,0" Click="Minus_Click" BorderBrush="Black" Background="White"/>
+        <TextBox x:Name="CountValue" Text="0" Width="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <Button x:Name="Add" Content="+" Width="16" Margin="0,0,5,0" Click="Add_Click" BorderBrush="Black" Background="White"/>
+        <Button x:Name="Reset" Content="[0]" Width="20" Height="20" Margin="5,0,5,0" Click="Reset_Click" BorderBrush="Black" Background="White"/>
+        <Button x:Name="Close" Width="12" Height="12" Margin="5,0,5,0" BorderBrush="Black" Background="White" Click="Close_Click">
+            <Image Source="Close.png"></Image>
+        </Button>
+    </StackPanel>
+</UserControl>
