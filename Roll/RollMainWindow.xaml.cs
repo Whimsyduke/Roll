@@ -53,7 +53,6 @@ namespace Roll
             {
                 this.RollNumber.Text = "1";
                 RollList.Items.Add(new RollControl(RollList, 1));
-                ToXML();
             }
             Ran = new Random();
         }
