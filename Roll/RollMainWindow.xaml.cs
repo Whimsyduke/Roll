@@ -66,26 +66,6 @@ namespace Roll
                     this.RollNumber.Text = "1";
                     RollList.Items.Add(new RollControl(RollList, 1));
                 }
-                try
-                {
-                    if (!File.Exists(FILE_NAME_LOG))
-                    {
-                        sw = File.CreateText(FILE_NAME_LOG);
-                    }
-                    else
-                    {
-                        StreamReader sr = new StreamReader(FILE_NAME_LOG);
-                        DndLogTextBox.Text = sr.ReadToEnd();
-                        sr.Close();
-                        sw = new StreamWriter(FILE_NAME_LOG, true);
-                    }
-                    sw.AutoFlush = true;
-                }
-                catch
-                {
-                    MessageBox.Show("日志文件" + FILE_NAME_LOG + "被占用！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-                    this.Close();
-                }
             }
             else
             {
@@ -93,6 +73,26 @@ namespace Roll
                 RollList.Items.Add(new RollControl(RollList, 1));
             }
             Ran = new Random();
+            try
+            {
+                if (!File.Exists(FILE_NAME_LOG))
+                {
+                    sw = File.CreateText(FILE_NAME_LOG);
+                }
+                else
+                {
+                    StreamReader sr = new StreamReader(FILE_NAME_LOG);
+                    DndLogTextBox.Text = sr.ReadToEnd();
+                    sr.Close();
+                    sw = new StreamWriter(FILE_NAME_LOG, true);
+                }
+                sw.AutoFlush = true;
+            }
+            catch
+            {
+                MessageBox.Show("日志文件" + FILE_NAME_LOG + "被占用！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Close();
+            }
         }
 
         private void RollToXML()
@@ -347,7 +347,12 @@ namespace Roll
             }
             catch
             {
-                MessageBox.Show("骰子设置错误，请检查后重试！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("骰子设置错误，请修改后重试！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            if (rollTime > 200 || rollNum > 200)
+            {
+                MessageBox.Show("骰子和骰子面数不能大于200，请修改后重试！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             string playerName;
