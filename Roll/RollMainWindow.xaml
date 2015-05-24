@@ -2,23 +2,109 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:control="clr-namespace:Roll"
-        Title="Roll" SizeToContent="WidthAndHeight" ResizeMode="CanMinimize" SizeChanged="Window_SizeChanged" Icon="Roll.ico">
-    <StackPanel Orientation="Vertical">
-        <StackPanel Orientation="Horizontal">
-            <Label Content="No." HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="45"/>
-            <Label Content="Min" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="50"/>
-            <Label Content="Max" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="57"/>
-            <Label Content="Roll" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="55"/>
-            <Label Content="Con." HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="110"/>
-        </StackPanel>
-        <ListView Name="RollList">
-        </ListView>
-        <StackPanel Height="26" Margin="5,5,5,5" Orientation="Horizontal">
-            <Label Content="Num." HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="50"/>
-            <TextBox Name="RollNumber" Text="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="50" Margin="5,0,5,0"/>
-            <Button Name="Confirm" Content="OK" Width="60" Margin="5,0,5,0" Click="Confirm_Click"/>
-            <Button Name="Generation" Content="Roll" Width="60" Margin="5,0,5,0" Click="Generation_Click"/>
-            <Button Name="Save" Content="Save" Width="60" Margin="5,0,5,0" Click="Save_Click"/>
-        </StackPanel>
-    </StackPanel>
+        Title="Roll Tool" SizeToContent="WidthAndHeight" ResizeMode="CanMinimize" SizeChanged="Window_SizeChanged" Icon="Roll.ico" Closing="Window_Closing">
+    <Grid>
+        <TabControl Name="MainTabControl">
+            <TabItem Name="RollPage" Header="Roll">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="No." HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="45"/>
+                        <Label Content="Min" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="50"/>
+                        <Label Content="Max" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="57"/>
+                        <Label Content="Roll" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="55"/>
+                        <Label Content="Con." HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="110"/>
+                    </StackPanel>
+                    <ListView Name="RollList">
+                    </ListView>
+                    <StackPanel Height="26" Margin="5,5,5,5" Orientation="Horizontal">
+                        <Label Content="Num." HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="50"/>
+                        <TextBox Name="RollNumber" Text="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="50" Margin="5,0,5,0"/>
+                        <Button Name="Confirm" Content="OK" Width="60" Margin="5,0,5,0" Click="Confirm_Click"/>
+                        <Button Name="Generation" Content="Roll" Width="60" Margin="5,0,5,0" Click="Generation_Click"/>
+                        <Button Name="Save" Content="Save" Width="60" Margin="5,0,5,0" Click="Save_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+            <TabItem Name="DnDPage" Header="D&amp;D">
+                <Grid Width="400">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="175"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="60"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="Player" Grid.Column="0" Grid.Row="0" Margin="5,0,5,0"/>
+                    <Label Content="For" Grid.Column="1" Grid.Row="0" Margin="10,0,5,0"/>
+                    <RadioButton GroupName="DnD" Name="ShortRadio" Grid.Column="2" Grid.Row="0" IsChecked="True" Margin="5,0,5,0" VerticalContentAlignment="Center">
+                        Short
+                    </RadioButton>
+                    <RadioButton GroupName="DnD" Name="FullRadio" Grid.Column="3" Grid.Row="0" Margin="5,0,5,0" VerticalContentAlignment="Center">
+                        Full
+                    </RadioButton>
+                    <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="1" Margin="5">
+                        <ComboBox Name="PlayerNameList" Width="163" SelectedIndex="0" SelectionChanged="PlayerNameList_SelectionChanged" >
+                            <ComboBoxItem Name="NewPlayerItem">
+                                <Label Content="Add New Player " Width="100"/>
+                            </ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Name="NewPlayerPanel" Orientation="Horizontal"  Grid.Column="0" Grid.Row="1" Margin="5">
+                        <TextBox Name="NewPlayerNameTextBox" Text="Add New Player " GotKeyboardFocus="NewPlayerNameTextBox_GotKeyboardFocus" Width="129" VerticalContentAlignment="Center" LostKeyboardFocus="NewPlayerNameTextBox_LostKeyboardFocus" Foreground="Gray"/>
+                        <Button Name="ConfirmPlayerName" Content="+" Width="16" BorderBrush="Black" Background="White" Click="ConfirmPlayerName_Click" Margin="-1,0,0,0"/>
+                    </StackPanel>
+                    <TextBox Name="ForTextBox" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="1" Margin="5,5,5,5" VerticalContentAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="2" Margin="5">
+                        <TextBox Name="DndRollFirstBox" Width="50" Text="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                        <Label Content="D" FontSize="14"/>
+                        <TextBox Name="DndRollSecondBox" Width="50" Margin="0,0,5,0" Text="6" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                        <Button x:Name="Minus" Content="-" Width="16" Margin="15,0,1,0" Background="White" Click="Minus_Click"/>
+                        <TextBox x:Name="AdditionalValue" Text="0" Width="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
+                        <Button x:Name="Add" Content="+" Width="16" Margin="1,0,5,0" Background="White" Click="Add_Click"/>
+                        <Button x:Name="DnDRoll" Content="Roll" Width="60" Margin="15,0,5,0" Click="DnDRoll_Click"/>
+                        <Button x:Name="ClearLog" Content="Clear" Width="40" Margin="5,0,5,0" Click="ClearLog_Click"/>
+                        <Button x:Name="DnDReset" Content="Reset" Width="40" Margin="5,0,5,0" Click="DnDReset_Click"/>
+                    </StackPanel>
+                    <TextBox Name="DndLogTextBox" Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="3" Height="150" Margin="5" IsReadOnly="True" TextWrapping="WrapWithOverflow" VerticalScrollBarVisibility="Auto"/>
+                </Grid>
+            </TabItem>
+            <TabItem Name="ConfigPage" Header="Config">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="When Open:" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="0" Margin="5,5,5,0"/>
+                    <StackPanel  Grid.Row="1" Grid.Column="0" Margin="15,0,5,5" DockPanel.Dock="Left" HorizontalAlignment="Left" Orientation="Horizontal">
+                        <RadioButton GroupName="Open" Name="RollRadio" IsChecked="True" Margin="5">
+                            Roll
+                        </RadioButton>
+                        <RadioButton GroupName="Open" Name="DnDRadio"  Margin="5">
+                            D&amp;D
+                        </RadioButton>
+                    </StackPanel>
+                    <Button Name="AboutSave" HorizontalAlignment="Right" Content="Save" Width="60" Height="26" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="5,0,5,5" Click="AboutSave_Click"/>
+                </Grid>
+            </TabItem>
+            <TabItem Name="AboutPage" Header="About">
+                <Grid Width="300" Height="150">
+                    <StackPanel>
+                        <Label Content="Roll Tool" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                        <Label Content="Write for SixTree." FontStyle="Italic" FontSize="18" HorizontalAlignment="Left" Margin="10,0,0,0"/>
+                        <Label Content="WhimsyDuke" FontSize="14" FontStyle="Italic" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+                        <Label Content="v1.0.0" FontSize="14" FontStyle="Italic" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
 </Window>

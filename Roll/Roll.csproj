@@ -56,9 +56,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="PlayerListItem.xaml.cs">
+      <DependentUpon>PlayerListItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RollControl.xaml.cs">
       <DependentUpon>RollControl.xaml</DependentUpon>
     </Compile>
+    <Page Include="PlayerListItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="RollMainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

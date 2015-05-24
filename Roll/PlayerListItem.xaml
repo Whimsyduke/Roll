@@ -1,0 +1,13 @@
+﻿<ComboBoxItem x:Class="Roll.PlayerListItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d">
+    <DockPanel Width="135">
+        <Label Name="PlayerName" DockPanel.Dock="Left" Width="123"/>
+        <Button x:Name="Delete" Width="12" Height="12" BorderBrush="Black" Background="White" Click="Delete_Click" DockPanel.Dock="Right">
+            <Image Source="Close.png"></Image>
+        </Button>
+    </DockPanel>
+</ComboBoxItem>
