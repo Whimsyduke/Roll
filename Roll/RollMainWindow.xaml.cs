@@ -370,7 +370,7 @@ namespace Roll
             for (int i = rollTime; i > 0; i--)
             {
                 int temp = ran.Next(0, rollNum + 1);
-                while (temp == -1 || temp == rollNum + 1)
+                while (temp == 0 || temp == rollNum + 1)
                 {
                     temp = ran.Next(0, rollNum + 1);
                 }
@@ -395,7 +395,7 @@ namespace Roll
                 additionalString = "+" + additionalValue;
             }
             string fullLog = "[" + System.DateTime.Now.ToString() + "][" + playerName + "][" + ForTextBox.Text + "][" + rollTime + "d" + rollNum + additionalString + "] > " + value + rollValue;
-            string shortLog = "[" + System.DateTime.Now.ToLongTimeString() + "][" + playerName + "][" + ForTextBox.Text + "][" + rollTime + "d" + rollNum + "] > " + value + "\n";
+            string shortLog = "[" + System.DateTime.Now.ToLongTimeString() + "][" + playerName + "][" + ForTextBox.Text + "][" + rollTime + "d" + rollNum + additionalString + "] > " + value + "\n";
             if (FullRadio.IsChecked == true) DndLogTextBox.Text += fullLog + "\n";
             if (ShortRadio.IsChecked == true) DndLogTextBox.Text += shortLog;
 
