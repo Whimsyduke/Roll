@@ -44,7 +44,7 @@ namespace Roll
                     XElement rollConfig = m_Xml.Element("RollPageConfig");
                     this.RollNumber.Text = rollConfig.Attribute("RollNumber").Value;
                     int rollNum = System.Int32.Parse(this.RollNumber.Text);
-                    for (int i = 1; i < rollNum; i++)
+                    for (int i = 1; i <= rollNum; i++)
                     {
                         RollList.Items.Add(new RollControl(RollList, rollConfig.Element("Index_" + i.ToString())));
                     }
