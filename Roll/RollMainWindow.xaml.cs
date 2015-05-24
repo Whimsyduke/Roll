@@ -82,7 +82,22 @@ namespace Roll
                 else
                 {
                     StreamReader sr = new StreamReader(FILE_NAME_LOG);
-                    DndLogTextBox.Text = sr.ReadToEnd();
+                    int i = 0;
+                    string log = sr.ReadToEnd();
+                    string temp;
+                    int lineIndex;
+                    if (log.LastIndexOf('\n') == log.Count() - 1)
+                    {
+                        log = log.Substring(0, log.Count() - 2);
+                    }
+                    do
+                    {
+                        lineIndex = log.LastIndexOf('\n');
+                        i++;
+                        temp = log.Substring(lineIndex + 1);
+                        DnDLogTextBox.Text += temp + '\n';
+                        log = log.Substring(0, log.Count() - temp.Count() - 1);
+                    }while (i < 20 && lineIndex !=0);
                     sr.Close();
                     sw = new StreamWriter(FILE_NAME_LOG, true);
                 }
@@ -396,8 +411,8 @@ namespace Roll
             }
             string fullLog = "[" + System.DateTime.Now.ToString() + "][" + playerName + "][" + ForTextBox.Text + "][" + rollTime + "d" + rollNum + additionalString + "] > " + value + rollValue;
             string shortLog = "[" + System.DateTime.Now.ToLongTimeString() + "][" + playerName + "][" + ForTextBox.Text + "][" + rollTime + "d" + rollNum + additionalString + "] > " + value + "\n";
-            if (FullRadio.IsChecked == true) DndLogTextBox.Text += fullLog + "\n";
-            if (ShortRadio.IsChecked == true) DndLogTextBox.Text += shortLog;
+            if (FullRadio.IsChecked == true) DnDLogTextBox.Text = fullLog + "\n" + DnDLogTextBox.Text;
+            if (ShortRadio.IsChecked == true) DnDLogTextBox.Text = shortLog + DnDLogTextBox.Text;
 
             sw.WriteLine(fullLog); 
         }
@@ -435,7 +450,7 @@ namespace Roll
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            sw.Close();
+            if (sw != null) sw.Close();
         }
 
         private void ClearLog_Click(object sender, RoutedEventArgs e)
@@ -443,7 +458,7 @@ namespace Roll
             if (MessageBox.Show("确认是否清屏？\n清屏之前的内容依旧保存在log.txt中。", "提示", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
             {
                 sw.WriteLine("----------------------------------------------");
-                DndLogTextBox.Text = "";
+                DnDLogTextBox.Text = "";
             }
         }
 
@@ -452,7 +467,7 @@ namespace Roll
             if (MessageBox.Show("确认是否重置？重置会清除所有记录以及玩家名。\n此过程不可挽回。", "提示", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
             {
                 sw.Close();
-                DndLogTextBox.Text = "";
+                DnDLogTextBox.Text = "";
                 File.Delete(FILE_NAME_LOG);
                 sw = File.CreateText(FILE_NAME_LOG);                
                 while (PlayerNameList.Items.Count > 1)
