@@ -84,20 +84,13 @@ namespace Roll
                     StreamReader sr = new StreamReader(FILE_NAME_LOG);
                     int i = 0;
                     string log = sr.ReadToEnd();
-                    string temp;
-                    int lineIndex;
-                    if (log.LastIndexOf('\n') == log.Count() - 1)
+                    List<string> logList = log.Split('\n').ToList();
+                    while (logList.Count != 0 && i < 20)
                     {
-                        log = log.Substring(0, log.Count() - 2);
-                    }
-                    do
-                    {
-                        lineIndex = log.LastIndexOf('\n');
                         i++;
-                        temp = log.Substring(lineIndex + 1);
-                        DnDLogTextBox.Text += temp + '\n';
-                        log = log.Substring(0, log.Count() - temp.Count() - 1);
-                    }while (i < 20 && lineIndex !=0);
+                        DnDLogTextBox.Text += logList.Last();
+                        logList.RemoveAt(logList.Count - 1);
+                    }
                     sr.Close();
                     sw = new StreamWriter(FILE_NAME_LOG, true);
                 }
