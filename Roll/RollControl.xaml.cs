@@ -23,25 +23,23 @@ namespace Roll
     public partial class RollControl : UserControl
     {
         ListView RollList;
-        public RollControl()
-        {
-            InitializeComponent();
-        }
-
-        public RollControl(ListView listView, int index)
+        MainWindow Main;
+        public RollControl(MainWindow window, ListView listView, int index)
         {
             InitializeComponent();
             this.Index.Content = index;
             RollList = listView;
+            Main = window;
         }
 
-        public RollControl(ListView listView, XElement xml)
+        public RollControl(MainWindow window, ListView listView, XElement xml)
         {
             InitializeComponent();
             this.Index.Content = xml.Attribute("Index").Value;
             this.MinValue.Text = xml.Attribute("MinValue").Value;
             this.MaxValue.Text = xml.Attribute("MaxValue").Value;
             RollList = listView;
+            Main = window;
         }
 
         private void Minus_Click(object sender, RoutedEventArgs e)
@@ -136,6 +134,7 @@ namespace Roll
                 select.Index.Content = i;
                 i++;
             }
+            Main.RollNumber.Text = (i - 1).ToString();
         }
     }
 }

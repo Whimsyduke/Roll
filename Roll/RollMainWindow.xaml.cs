@@ -46,11 +46,11 @@ namespace Roll
                     int rollNum = System.Int32.Parse(this.RollNumber.Text);
                     for (int i = 1; i <= rollNum; i++)
                     {
-                        RollList.Items.Add(new RollControl(RollList, rollConfig.Element("Index_" + i.ToString())));
+                        RollList.Items.Add(new RollControl(this, RollList, rollConfig.Element("Index_" + i.ToString())));
                     }
                     if (rollNum == 0)
                     {
-                        RollList.Items.Add(new RollControl(RollList, 1));
+                        RollList.Items.Add(new RollControl(this, RollList, 1));
                         this.RollNumber.Text = "1";
                     }
                     XElement dnDConfig = m_Xml.Element("DnDPageConfig");
@@ -64,13 +64,13 @@ namespace Roll
                     MessageBox.Show("配置文件出错，恢复初始设置！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                     RollList.Items.Clear();
                     this.RollNumber.Text = "1";
-                    RollList.Items.Add(new RollControl(RollList, 1));
+                    RollList.Items.Add(new RollControl(this, RollList, 1));
                 }
             }
             else
             {
                 this.RollNumber.Text = "1";
-                RollList.Items.Add(new RollControl(RollList, 1));
+                RollList.Items.Add(new RollControl(this, RollList, 1));
             }
             Ran = new Random();
             try
@@ -241,7 +241,7 @@ namespace Roll
             {
                 for (int i = RollList.Items.Count + 1; i <= rollNumber; i++)
                 {
-                    RollList.Items.Add(new RollControl(RollList, i));
+                    RollList.Items.Add(new RollControl(this, RollList, i));
                 }
             }
         }

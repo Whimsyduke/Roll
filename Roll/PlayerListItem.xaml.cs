@@ -22,11 +22,6 @@ namespace Roll
     {
         MainWindow Main;
         ComboBox PlayerList;
-
-        public PlayerListItem()
-        {
-            InitializeComponent();
-        }
         public PlayerListItem(MainWindow window, ComboBox playerList, string name)
         {
             InitializeComponent();
