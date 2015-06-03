@@ -402,6 +402,7 @@ namespace Roll
             {
                 additionalString = "+" + additionalValue;
             }
+            value += additionalValue;
             string fullLog = "[" + System.DateTime.Now.ToString() + "][" + playerName + "][" + ForTextBox.Text + "][" + rollTime + "d" + rollNum + additionalString + "] > " + value + rollValue;
             string shortLog = "[" + System.DateTime.Now.ToLongTimeString() + "][" + playerName + "][" + ForTextBox.Text + "][" + rollTime + "d" + rollNum + additionalString + "] > " + value + "\n";
             if (FullRadio.IsChecked == true) DnDLogTextBox.Text = fullLog + "\n" + DnDLogTextBox.Text;
