@@ -21,18 +21,25 @@ namespace Roll
     public partial class PlayerListItem : ComboBoxItem
     {
         MainWindow Main;
-        ComboBox PlayerList;
-        public PlayerListItem(MainWindow window, ComboBox playerList, string name)
+        public PlayerListItem(MainWindow window, string name)
         {
             InitializeComponent();
             PlayerName.Content = name;
             Main = window;
-            PlayerList = playerList;
         }
-        private void Delete_Click(object sender, RoutedEventArgs e)
+        public void Delete_Click(object sender, RoutedEventArgs e)
         {
             Main.DnDToXML(false, this.PlayerName.Content.ToString());
-            PlayerList.Items.Remove(this);
+            int i = Main.PlayerNameList.Items.IndexOf(this);
+            Main.PlayerNameList.Items.Remove(this);
+            if (Main.PlayerNameList.Items.Count > i)
+            {
+                Main.PlayerNameList.SelectedIndex = i;
+            }
+            else
+            {
+                Main.PlayerNameList.SelectedIndex = i - 1;
+            }
         }
     }
 }

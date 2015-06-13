@@ -22,23 +22,20 @@ namespace Roll
     /// </summary>
     public partial class RollControl : UserControl
     {
-        ListView RollList;
         MainWindow Main;
-        public RollControl(MainWindow window, ListView listView, int index)
+        public RollControl(MainWindow window, int index)
         {
             InitializeComponent();
             this.Index.Content = index;
-            RollList = listView;
             Main = window;
         }
 
-        public RollControl(MainWindow window, ListView listView, XElement xml)
+        public RollControl(MainWindow window, XElement xml)
         {
             InitializeComponent();
             this.Index.Content = xml.Attribute("Index").Value;
             this.MinValue.Text = xml.Attribute("MinValue").Value;
             this.MaxValue.Text = xml.Attribute("MaxValue").Value;
-            RollList = listView;
             Main = window;
         }
 
@@ -127,13 +124,26 @@ namespace Roll
 
         private void Close_Click(object sender, RoutedEventArgs e)
         {
-            RollList.Items.Remove(this);
+            Main.RollList.Items.Remove(this);
             int i = 1;
-            foreach (RollControl select in RollList.Items)
+            foreach (RollControl select in Main.RollList.Items)
             {
                 select.Index.Content = i;
                 i++;
             }
+            Main.RollNumber.Text = (i - 1).ToString();
+        }
+
+        private void New_Click(object sender, RoutedEventArgs e)
+        {
+            int index = Main.RollList.Items.IndexOf(this);
+            Main.RollList.Items.Insert(index, new RollControl(Main, index));
+            int i = 1;
+            foreach (RollControl roll in Main.RollList.Items)
+            {
+                roll.Index.Content = i;
+                i++;
+            } 
             Main.RollNumber.Text = (i - 1).ToString();
         }
     }

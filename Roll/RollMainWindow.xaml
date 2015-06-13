@@ -58,6 +58,9 @@
                         <TextBox Name="NewPlayerNameTextBox" Text="Add New Player " GotKeyboardFocus="NewPlayerNameTextBox_GotKeyboardFocus" Width="129" VerticalContentAlignment="Center" LostKeyboardFocus="NewPlayerNameTextBox_LostKeyboardFocus" Foreground="Gray"/>
                         <Button Name="ConfirmPlayerName" Content="+" Width="16" BorderBrush="Black" Background="White" Click="ConfirmPlayerName_Click" Margin="-1,0,0,0"/>
                     </StackPanel>
+                    <Button Name="ClosePlayerName" Width="12" Height="12" BorderBrush="Black" Background="White" Grid.Column="0" Grid.Row="1" Margin="105,0,0,0" Visibility="Collapsed" Click="ClosePlayerName_Click">
+                        <Image Source="Close.png"></Image>
+                    </Button>
                     <TextBox Name="ForTextBox" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="1" Margin="5,5,5,5" VerticalContentAlignment="Center"/>
                     <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="2" Margin="5">
                         <TextBox Name="DndRollFirstBox" Width="50" Text="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
@@ -101,7 +104,7 @@
                         <Label Content="Roll Tool" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,10,0,0"/>
                         <Label Content="Write for SixTree." FontStyle="Italic" FontSize="18" HorizontalAlignment="Left" Margin="10,0,0,0"/>
                         <Label Content="WhimsyDuke" FontSize="14" FontStyle="Italic" HorizontalAlignment="Right" Margin="0,0,10,0"/>
-                        <Label Content="v1.1.7" FontSize="14" FontStyle="Italic" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+                        <Label Content="v1.1.8" FontSize="14" FontStyle="Italic" HorizontalAlignment="Right" Margin="0,0,10,0"/>
                     </StackPanel>
                 </Grid>
             </TabItem>

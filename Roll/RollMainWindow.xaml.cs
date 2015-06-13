@@ -46,17 +46,17 @@ namespace Roll
                     int rollNum = System.Int32.Parse(this.RollNumber.Text);
                     for (int i = 1; i <= rollNum; i++)
                     {
-                        RollList.Items.Add(new RollControl(this, RollList, rollConfig.Element("Index_" + i.ToString())));
+                        RollList.Items.Add(new RollControl(this, rollConfig.Element("Index_" + i.ToString())));
                     }
                     if (rollNum == 0)
                     {
-                        RollList.Items.Add(new RollControl(this, RollList, 1));
+                        RollList.Items.Add(new RollControl(this, 1));
                         this.RollNumber.Text = "1";
                     }
                     XElement dnDConfig = m_Xml.Element("DnDPageConfig");
                     foreach (XElement select in dnDConfig.Elements())
                     {
-                        PlayerNameList.Items.Add(new PlayerListItem(this, PlayerNameList, select.Value));
+                        PlayerNameList.Items.Add(new PlayerListItem(this, select.Value));
                     }
                 }
                 catch
@@ -64,13 +64,13 @@ namespace Roll
                     MessageBox.Show("配置文件出错，恢复初始设置！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                     RollList.Items.Clear();
                     this.RollNumber.Text = "1";
-                    RollList.Items.Add(new RollControl(this, RollList, 1));
+                    RollList.Items.Add(new RollControl(this, 1));
                 }
             }
             else
             {
                 this.RollNumber.Text = "1";
-                RollList.Items.Add(new RollControl(this, RollList, 1));
+                RollList.Items.Add(new RollControl(this, 1));
             }
             Ran = new Random();
             try
@@ -241,7 +241,7 @@ namespace Roll
             {
                 for (int i = RollList.Items.Count + 1; i <= rollNumber; i++)
                 {
-                    RollList.Items.Add(new RollControl(this, RollList, i));
+                    RollList.Items.Add(new RollControl(this, i));
                 }
             }
         }
@@ -261,9 +261,9 @@ namespace Roll
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (RollList.Items.Count > 10)
+            if (RollList.Items.Count > 15)
             {
-                RollList.Height = 310;
+                RollList.Height = 454;
             }
             else
             {
@@ -325,21 +325,42 @@ namespace Roll
                     return;
                 }
             }
-            PlayerNameList.Items.Add(new PlayerListItem(this, PlayerNameList, NewPlayerNameTextBox.Text));
+            PlayerListItem item = new PlayerListItem(this, NewPlayerNameTextBox.Text);
+            PlayerNameList.Items.Add(item);
+            PlayerNameList.SelectedItem = item;
+
             DnDToXML(true, NewPlayerNameTextBox.Text);
             NewPlayerNameTextBox.Text = "Add New Player ";
         }
 
+        private void ClosePlayerName_Click(object sender, RoutedEventArgs e)
+        {
+            PlayerListItem item = PlayerNameList.Items[PlayerNameList.SelectedIndex] as PlayerListItem;
+            int i = PlayerNameList.Items.IndexOf(item);
+
+            DnDToXML(false, item.PlayerName.Content.ToString());
+            PlayerNameList.Items.Remove(item);
+            if (PlayerNameList.Items.Count > i)
+            {
+                PlayerNameList.SelectedIndex = i;
+            }
+            else
+            {
+                PlayerNameList.SelectedIndex = i - 1;
+            }
+        }
         private void PlayerNameList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (NewPlayerPanel == null) return;
             if (PlayerNameList.SelectedIndex == 0)
             {
                 NewPlayerPanel.Visibility = System.Windows.Visibility.Visible;
+                ClosePlayerName.Visibility = System.Windows.Visibility.Collapsed;
             }
             else
             {
                 NewPlayerPanel.Visibility = System.Windows.Visibility.Collapsed;
+                ClosePlayerName.Visibility = System.Windows.Visibility.Visible;
             }
         }
 
@@ -403,8 +424,18 @@ namespace Roll
                 additionalString = "+" + additionalValue;
             }
             value += additionalValue;
-            string fullLog = "[" + System.DateTime.Now.ToString() + "][" + playerName + "][" + ForTextBox.Text + "][" + rollTime + "d" + rollNum + additionalString + "] > " + value + rollValue;
-            string shortLog = "[" + System.DateTime.Now.ToLongTimeString() + "][" + playerName + "][" + ForTextBox.Text + "][" + rollTime + "d" + rollNum + additionalString + "] > " + value + "\n";
+            string fullLog;
+            string shortLog;
+            if (additionalValue != 0)
+            {
+                fullLog = "[" + System.DateTime.Now.ToString("yyyy年MM月dd日 dddd HH时mm分ss秒") + "][" + playerName + "][" + ForTextBox.Text + "][" + rollTime + "d" + rollNum + additionalString + "] > " + value + rollValue;
+                shortLog = "[" + System.DateTime.Now.ToString("HH:mm:ss") + "][" + playerName + "][" + ForTextBox.Text + "][" + rollTime + "d" + rollNum + additionalString + "] > " + value + "\n";
+            }
+            else
+            {
+                fullLog = "[" + System.DateTime.Now.ToString("yyyy年MM月dd日 dddd HH时mm分ss秒") + "][" + playerName + "][" + ForTextBox.Text + "][" + rollTime + "d" + rollNum + "] > " + value + rollValue;
+                shortLog = "[" + System.DateTime.Now.ToString("HH:mm:ss") + "][" + playerName + "][" + ForTextBox.Text + "][" + rollTime + "d" + rollNum + "] > " + value + "\n";
+            }
             if (FullRadio.IsChecked == true) DnDLogTextBox.Text = fullLog + "\n" + DnDLogTextBox.Text;
             if (ShortRadio.IsChecked == true) DnDLogTextBox.Text = shortLog + DnDLogTextBox.Text;
 
@@ -471,5 +502,6 @@ namespace Roll
                 DnDCleanToXML();
             }
         }
+
     }
 }
