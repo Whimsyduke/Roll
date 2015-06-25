@@ -32,9 +32,9 @@ namespace Roll
         public MainWindow()
         {
             InitializeComponent();
-            if (File.Exists(FILE_NAME_CONFIG))
+            if (File.Exists(System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase + FILE_NAME_CONFIG))
             {
-                m_Xml = XElement.Load(FILE_NAME_CONFIG);
+                m_Xml = XElement.Load(System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase + FILE_NAME_CONFIG);
                 try
                 {
                     int openPageIndex = System.Int32.Parse(m_Xml.Attribute("OpenPage").Value);
@@ -75,13 +75,13 @@ namespace Roll
             Ran = new Random();
             try
             {
-                if (!File.Exists(FILE_NAME_LOG))
+                if (!File.Exists(System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase + FILE_NAME_LOG))
                 {
-                    sw = File.CreateText(FILE_NAME_LOG);
+                    sw = File.CreateText(System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase + FILE_NAME_LOG);
                 }
                 else
                 {
-                    StreamReader sr = new StreamReader(FILE_NAME_LOG);
+                    StreamReader sr = new StreamReader(System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase + FILE_NAME_LOG);
                     int i = 0;
                     string log = sr.ReadToEnd();
                     List<string> logList = log.Split('\n').ToList();
@@ -92,22 +92,41 @@ namespace Roll
                         logList.RemoveAt(logList.Count - 1);
                     }
                     sr.Close();
-                    sw = new StreamWriter(FILE_NAME_LOG, true);
+                    sw = new StreamWriter(System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase + FILE_NAME_LOG, true);
                 }
                 sw.AutoFlush = true;
             }
             catch
             {
-                MessageBox.Show("日志文件" + FILE_NAME_LOG + "被占用！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("日志文件" + System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase + FILE_NAME_LOG + "被占用！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                 this.Close();
+            }
+            string[] Args = Environment.GetCommandLineArgs();
+            switch (Args.Length)
+            {
+                case 1:
+                    return;
+                case 2:
+                    if (Args[1] == "-r" || Args[1] == "-R")
+                    {
+                        SetOpenPageIndex(0);
+                        foreach (RollControl roll in RollList.Items)
+                        {
+                            roll.Generation(Ran.Next());
+                        }
+                    }
+                    return;
+                default:
+                    MessageBox.Show("无效的参数！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
             }
         }
 
         private void RollToXML()
         {
-            if (File.Exists(FILE_NAME_CONFIG))
+            if (File.Exists(System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase + FILE_NAME_CONFIG))
             {
-                m_Xml = XElement.Load(FILE_NAME_CONFIG);
+                m_Xml = XElement.Load(System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase + FILE_NAME_CONFIG);
                 m_Xml.Element("RollPageConfig").Remove();
                 XElement rollConfig = new XElement("RollPageConfig",
                     new XAttribute("RollNumber", RollNumber.Text));
@@ -133,14 +152,14 @@ namespace Roll
                 XElement DndConfig = new XElement("DnDPageConfig");
                 m_Xml.Add(DndConfig);
             }
-            m_Xml.Save(FILE_NAME_CONFIG);
+            m_Xml.Save(System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase + FILE_NAME_CONFIG);
         }
 
         private void ConfigToXML()
         {
-            if (File.Exists(FILE_NAME_CONFIG))
+            if (File.Exists(System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase + FILE_NAME_CONFIG))
             {
-                m_Xml = XElement.Load(FILE_NAME_CONFIG);
+                m_Xml = XElement.Load(System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase + FILE_NAME_CONFIG);
                 m_Xml.Attribute("OpenPage").Value = GetOpenPageIndex().ToString();
             }
             else
@@ -153,15 +172,15 @@ namespace Roll
                 XElement dnDConfig = new XElement("DnDPageConfig");
                 m_Xml.Add(dnDConfig);
             }
-            m_Xml.Save(FILE_NAME_CONFIG);
+            m_Xml.Save(System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase + FILE_NAME_CONFIG);
         }
 
         public void DnDToXML(bool add, string name)
         {
 
-            if (File.Exists(FILE_NAME_CONFIG))
+            if (File.Exists(System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase + FILE_NAME_CONFIG))
             {
-                m_Xml = XElement.Load(FILE_NAME_CONFIG);
+                m_Xml = XElement.Load(System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase + FILE_NAME_CONFIG);
                 XElement dnDConfig = m_Xml.Element("DnDPageConfig");
                 if (add)
                 {
@@ -183,15 +202,15 @@ namespace Roll
                 if (add) dnDConfig.Add(new XElement("_" + name.GetHashCode().ToString(), name));
                 m_Xml.Add(dnDConfig);
             }
-            m_Xml.Save(FILE_NAME_CONFIG);
+            m_Xml.Save(System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase + FILE_NAME_CONFIG);
         }
 
         public void DnDCleanToXML()
         {
 
-            if (File.Exists(FILE_NAME_CONFIG))
+            if (File.Exists(System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase + FILE_NAME_CONFIG))
             {
-                m_Xml = XElement.Load(FILE_NAME_CONFIG);
+                m_Xml = XElement.Load(System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase + FILE_NAME_CONFIG);
                 XElement dnDConfig = m_Xml.Element("DnDPageConfig");
                 dnDConfig.RemoveAll();
             }
@@ -205,7 +224,7 @@ namespace Roll
                 XElement dnDConfig = new XElement("DnDPageConfig");
                 m_Xml.Add(dnDConfig);
             }
-            m_Xml.Save(FILE_NAME_CONFIG);
+            m_Xml.Save(System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase + FILE_NAME_CONFIG);
         }
 
         private void Confirm_Click(object sender, RoutedEventArgs e)
@@ -493,8 +512,8 @@ namespace Roll
             {
                 sw.Close();
                 DnDLogTextBox.Text = "";
-                File.Delete(FILE_NAME_LOG);
-                sw = File.CreateText(FILE_NAME_LOG);                
+                File.Delete(System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase + FILE_NAME_LOG);
+                sw = File.CreateText(System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase + FILE_NAME_LOG);                
                 while (PlayerNameList.Items.Count > 1)
                 {
                     PlayerNameList.Items.RemoveAt(1);

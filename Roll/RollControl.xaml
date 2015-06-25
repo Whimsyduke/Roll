@@ -13,7 +13,7 @@
         <TextBox x:Name="CountValue" Text="0" Width="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
         <Button x:Name="Add" Content="+" Width="16" Margin="1,0,5,0" Click="Add_Click" Background="White"/>
         <Button x:Name="Reset" Content="[0]" Width="20" Height="20" Margin="5,0,5,0" Click="Reset_Click" BorderBrush="Black" Background="White"/>
-        <Button x:Name="New" Width="20" Height="20" Margin="5,0,5,0" BorderBrush="Black" Background="White" Content="NL" Click="New_Click"/>
+        <Button x:Name="New" Width="20" Height="20" Margin="5,0,5,0" BorderBrush="Black" Background="White" Content="↑" Click="New_Click"/>
         <Button x:Name="Close" Width="12" Height="12" Margin="5,0,5,0" BorderBrush="Black" Background="White" Click="Close_Click">
             <Image Source="Close.png"></Image>
         </Button>
