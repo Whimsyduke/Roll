@@ -20,13 +20,15 @@ namespace Roll
     /// </summary>
     public partial class PlayerListItem : ComboBoxItem
     {
-        MainWindow Main;
         public PlayerListItem(MainWindow window, string name)
         {
             InitializeComponent();
             PlayerName.Content = name;
             Main = window;
         }
+
+        public MainWindow Main { get; set; }
+
         public void Delete_Click(object sender, RoutedEventArgs e)
         {
             Main.DnDToXML(false, this.PlayerName.Content.ToString());

@@ -433,7 +433,8 @@ namespace Roll
             {
                 rollValue = "[]";
             }
-            string additionalString = "";
+
+            string additionalString;
             if (additionalValue < 0)
             {
                 additionalString = "-" + System.Math.Abs(additionalValue);

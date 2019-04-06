@@ -22,7 +22,7 @@ namespace Roll
     /// </summary>
     public partial class RollControl : UserControl
     {
-        MainWindow Main;
+        public MainWindow Main { get; set; }
         public RollControl(MainWindow window, int index)
         {
             InitializeComponent();
